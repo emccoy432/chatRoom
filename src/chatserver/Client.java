@@ -11,37 +11,39 @@ package chatserver;
  */
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class Client extends Thread{
     String serverName = "localhost";
     int port = 8675;
     Socket client;
+    boolean stop = true;
+    Scanner cont = new Scanner(System.in);
   
   public void run()
   {
-      while(true)
+      while(stop)
       {
         try{
-        Thread.sleep(1000);
+          
+       //ideally the client merely makes the connection and then the server inputs the socket into the list.
+        Scanner in = new Scanner(System.in);
+        Thread.yield();
         System.out.println("Client starts");
         System.out.println("**********************************************************************");
         System.out.println("Client: Connecting to " + serverName + " on port " + port);
         client = new Socket(serverName, port);
-        System.out.println("Client: Just connected to " + client.getRemoteSocketAddress());
-        OutputStream outToServer = client.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF("Hello from " + client.getLocalSocketAddress());
-        InputStream inFromServer = client.getInputStream();
-        DataInputStream in = new DataInputStream(inFromServer);
-        System.out.println("Server says " + in.readUTF());
-        client.close();
-        }catch(IOException e)
-        {
-            e.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
+  stop = false;
+        //we need this initial message block to get the server going.
+        
+        
+        }catch (IOException ex) {
+              Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        //catch (InterruptedException ex) {
+        //    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        //}
       }
   }
 }

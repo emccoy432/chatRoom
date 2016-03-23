@@ -6,6 +6,7 @@
 package chatserver;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  *
@@ -20,12 +21,29 @@ public class ChatServer {
         // TODO code application logic here
         int port;
         port = 8675;
+        boolean cont = false;
+        Scanner scan = new Scanner(System.in);
     try
     {
-        Thread t = new Server(port);
-        Thread c = new Client();
-        t.start();
-        c.start();
+        System.out.println("Procceed with Chat (Y/N)");
+        String choice = scan.nextLine();
+        if(!choice.equals("Y"))
+        {
+            cont = false;
+        }
+        else
+        {
+            cont = true;
+        }
+        if(cont == true)
+        {
+        
+            Thread s = new Server(port, cont);
+            Thread c = new Client();
+            s.start();
+            c.start();
+        }
+        
     }catch(IOException e)
    {
         e.printStackTrace();
